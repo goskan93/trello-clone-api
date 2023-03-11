@@ -10,11 +10,19 @@ export class CardService {
   constructor(@InjectModel(Card.name) private cardModel: Model<CardDocument>) {}
 
   async getAll(): Promise<CardOutput[]> {
-    return await this.cardModel.find();
+    const cards = await this.cardModel.find();
+    const mappedCards = cards.map(
+      (c) => new CardOutput(c.name, c._id.toString()),
+    );
+    return mappedCards;
   }
 
   async findById(id: string): Promise<CardOutput> {
-    return await this.cardModel.findById(id);
+    const card = await this.cardModel.findById(id);
+    if (card) {
+      return new CardOutput(card.name, card._id.toString());
+    }
+    return null;
   }
 
   async delete(id: string) {

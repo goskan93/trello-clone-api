@@ -55,7 +55,7 @@ export class TaskController {
   @Post()
   async create(@Body() task: TaskInput): Promise<string> {
     const id = await this.taskService.create(task);
-    console.log('saved');
+    console.log('saved task', id);
     return id;
   }
 

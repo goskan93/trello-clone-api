@@ -23,7 +23,8 @@ export class CardController {
   @HttpCode(200)
   async getAll(): Promise<CardOutput[]> {
     try {
-      return this.cardService.getAll();
+      const cards = await this.cardService.getAll();
+      return cards;
     } catch (error) {
       throw new InternalServerErrorException(
         {
@@ -55,7 +56,6 @@ export class CardController {
   @Post()
   async create(@Body() card: CardInput): Promise<string> {
     const newCardId = await this.cardService.create(card);
-    console.log('saved', newCardId);
     return newCardId;
   }
 
