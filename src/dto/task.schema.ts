@@ -9,6 +9,8 @@ export class Task {
   name: string;
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Card' })
   card: Card;
+  @Prop({ required: true })
+  index: number;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);
