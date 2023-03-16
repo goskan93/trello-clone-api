@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CardInput } from 'src/contracts/inputs/CardInput';
 import { CardOutput } from 'src/contracts/outputs/CardOutput';
 import { InjectModel } from '@nestjs/mongoose';
-import { Card, CardDocument } from '../dto/card.schema';
+import { Card, CardDocument } from './dto/card.schema';
 import { Model } from 'mongoose';
 
 @Injectable()

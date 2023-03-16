@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TaskInput } from 'src/contracts/inputs/TaskInput';
 import { TaskOutput } from 'src/contracts/outputs/TaskOutput';
 import { InjectModel } from '@nestjs/mongoose';
-import { Task, TaskDocument } from '../dto/task.schema';
+import { Task, TaskDocument } from './dto/task.schema';
 import { Model } from 'mongoose';
 import { insertElement } from 'src/helpers/arrayHelpers';
 import { MoveTask } from 'src/contracts/inputs/MoveTask';
@@ -20,7 +20,11 @@ export class TaskService {
   }
 
   async findById(id: string): Promise<TaskOutput> {
-    return await this.taskModel.findById(id);
+    const task = await this.taskModel.findById(id);
+
+    return task
+      ? new TaskOutput(task.name, task._id.toString(), task.card.id, task.index)
+      : null;
   }
 
   async findByCardId(id: string): Promise<TaskOutput[]> {
@@ -60,14 +64,39 @@ export class TaskService {
   }
 
   async move(context: MoveTask): Promise<void> {
-    let toCardTasks = (await this.findByCardId(context.toCardId)).sort();
+    let cardTasks = (await this.findByCardId(context.toCardId)).sort(
+      (a, b) => a.index - b.index,
+    );
     let currentTask = await this.findById(context.taskId);
-    if (context.fromCardId === context.toCardId) {
-      toCardTasks = toCardTasks.filter((t) => t.id !== context.taskId);
-    }
-    toCardTasks = insertElement(toCardTasks, currentTask, context.index);
-    toCardTasks.forEach(async (t, i) => {
+    const sortedTasks = this.prepareToMove(
+      cardTasks,
+      currentTask,
+      context.index,
+      context.fromCardId === context.toCardId,
+    );
+    let i = 0;
+    for await (const t of sortedTasks) {
       await this.update(t.id, context.toCardId, i);
-    });
+      i++;
+    }
+  }
+
+  private prepareToMove(
+    tasks: TaskOutput[],
+    task: TaskOutput,
+    index: number,
+    moveInsideCard: boolean,
+  ): TaskOutput[] {
+    let _index = index;
+    let _tasks = tasks;
+    if (moveInsideCard) {
+      const indextOfTask = tasks.findIndex((t) => t.id === task.id);
+      if (indextOfTask < _index) {
+        _index--;
+      }
+      _tasks = _tasks.filter((t) => t.id !== task.id);
+    }
+    _tasks = insertElement(_tasks, task, _index);
+    return _tasks;
   }
 }
