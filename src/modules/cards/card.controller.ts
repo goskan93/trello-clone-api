@@ -8,12 +8,14 @@ import {
   Body,
   Delete,
   HttpStatus,
+  UseGuards,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { CardOutput } from 'src/contracts/outputs/CardOutput';
 import { CardService } from './card.service';
 import { Response } from 'express';
 import { CardInput } from 'src/contracts/inputs/CardInput';
+import { AuthGuard } from '../authentication/auth.guard';
 
 @Controller('api/cards')
 export class CardController {
@@ -38,6 +40,7 @@ export class CardController {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   async getById(
     @Param('id') id: string,
