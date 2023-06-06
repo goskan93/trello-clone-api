@@ -16,14 +16,19 @@ import { CardService } from './card.service';
 import { Response } from 'express';
 import { CardInput } from 'src/contracts/inputs/CardInput';
 import { AuthGuard } from '../authentication/auth.guard';
+import { RequiredPermissions } from '../authentication/permissions.decorator';
+import { PERMISSIONS } from '../authentication/permissions';
+import { PermissionGuard } from '../authentication/permissions.guard';
 
+@UseGuards(AuthGuard, PermissionGuard)
 @Controller('api/cards')
 export class CardController {
   constructor(private readonly cardService: CardService) {}
 
   @Get()
   @HttpCode(200)
-  async getAll(): Promise<CardOutput[]> {
+  @RequiredPermissions(PERMISSIONS.CARD_GET)
+  async getAllByUserId(): Promise<CardOutput[]> {
     try {
       const cards = await this.cardService.getAll();
       return cards;
@@ -40,8 +45,7 @@ export class CardController {
     }
   }
 
-  @UseGuards(AuthGuard)
-  @Get(':id')
+  @Get(':userId/cards/:id')
   async getById(
     @Param('id') id: string,
     @Res({ passthrough: true }) res: Response,
@@ -56,13 +60,13 @@ export class CardController {
     return {} as CardOutput;
   }
 
-  @Post()
+  @Post(':userId/cards')
   async create(@Body() card: CardInput): Promise<string> {
     const newCardId = await this.cardService.create(card);
     return newCardId;
   }
 
-  @Delete(':id')
+  @Delete(':userId/cards/:id')
   async delete(@Param('id') id: string) {
     await this.cardService.delete(id);
   }
