@@ -21,7 +21,7 @@ import { PERMISSIONS } from '../authentication/permissions';
 import { PermissionGuard } from '../authentication/permissions.guard';
 
 @UseGuards(AuthGuard, PermissionGuard)
-@Controller('api/cards')
+@Controller('api/user/cards')
 export class CardController {
   constructor(private readonly cardService: CardService) {}
 
@@ -45,7 +45,7 @@ export class CardController {
     }
   }
 
-  @Get(':userId/cards/:id')
+  @Get(':id')
   async getById(
     @Param('id') id: string,
     @Res({ passthrough: true }) res: Response,
@@ -60,13 +60,13 @@ export class CardController {
     return {} as CardOutput;
   }
 
-  @Post(':userId/cards')
+  @Post()
   async create(@Body() card: CardInput): Promise<string> {
     const newCardId = await this.cardService.create(card);
     return newCardId;
   }
 
-  @Delete(':userId/cards/:id')
+  @Delete(':id')
   async delete(@Param('id') id: string) {
     await this.cardService.delete(id);
   }

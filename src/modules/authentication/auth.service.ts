@@ -25,6 +25,7 @@ export class AuthService {
     }
     const payload = {
       username: user.username,
+      id: userDb.id,
       sub: userDb.id,
       claims: [
         PERMISSIONS.CARD_CREATE,
