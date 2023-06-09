@@ -10,22 +10,29 @@ import {
   HttpStatus,
   InternalServerErrorException,
   Patch,
+  UseGuards,
 } from '@nestjs/common';
 import { TaskOutput } from 'src/contracts/outputs/TaskOutput';
 import { TaskService } from './task.service';
 import { Response } from 'express';
 import { TaskInput } from 'src/contracts/inputs/TaskInput';
 import { MoveTask } from 'src/contracts/inputs/MoveTask';
+import { AuthGuard } from '../authentication/auth.guard';
+import { PermissionGuard } from '../authentication/permissions.guard';
+import { RequiredPermissions } from '../authentication/permissions.decorator';
+import { PERMISSIONS } from '../authentication/permissions';
 
-@Controller('api/user/tasks')
+@UseGuards(AuthGuard, PermissionGuard)
+@Controller('api/users/:userId/tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Get()
   @HttpCode(200)
-  async getAll(): Promise<TaskOutput[]> {
+  @RequiredPermissions(PERMISSIONS.TASK_GET)
+  async getAllByUserId(@Param('userId') userId: string): Promise<TaskOutput[]> {
     try {
-      return this.taskService.getAll();
+      return this.taskService.getAllByUserId(userId);
     } catch (error) {
       throw new InternalServerErrorException(
         {
@@ -39,12 +46,14 @@ export class TaskController {
     }
   }
 
-  @Get(':id')
+  @Get(':taskId')
+  @RequiredPermissions(PERMISSIONS.TASK_GET)
   async getById(
-    @Param('id') id: string,
+    @Param('userId') userId: string,
+    @Param('taskId') taskId: string,
     @Res({ passthrough: true }) res: Response,
   ): Promise<TaskOutput> {
-    const task = await this.taskService.findById(id);
+    const task = await this.taskService.findById(userId, taskId);
     if (task) {
       res.status(HttpStatus.OK);
       return task;
@@ -55,9 +64,13 @@ export class TaskController {
   }
 
   @Post()
-  async create(@Body() task: TaskInput): Promise<TaskOutput> {
+  @RequiredPermissions(PERMISSIONS.TASK_CREATE)
+  async create(
+    @Param('userId') userId: string,
+    @Body() task: TaskInput,
+  ): Promise<TaskOutput> {
     try {
-      const newTask = await this.taskService.create(task);
+      const newTask = await this.taskService.create(userId, task);
       return newTask;
     } catch (error) {
       throw new InternalServerErrorException(
@@ -72,13 +85,18 @@ export class TaskController {
     }
   }
 
-  @Delete(':id')
-  async delete(@Param('id') id: string) {
-    await this.taskService.delete(id);
+  @Delete(':taskId')
+  @RequiredPermissions(PERMISSIONS.TASK_DELETE)
+  async delete(
+    @Param('userId') userId: string,
+    @Param('taskId') taskId: string,
+  ) {
+    await this.taskService.delete(userId, taskId);
   }
 
   @Patch('move')
-  async move(@Body() moveContext: MoveTask) {
-    await this.taskService.move(moveContext);
+  @RequiredPermissions(PERMISSIONS.TASK_MOVE)
+  async move(@Param('userId') userId: string, @Body() moveContext: MoveTask) {
+    await this.taskService.move(userId, moveContext);
   }
 }

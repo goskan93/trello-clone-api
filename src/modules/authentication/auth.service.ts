@@ -7,7 +7,7 @@ import { UserService } from '../users/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserInput } from 'src/contracts/inputs/UserInput';
-import { PERMISSIONS } from './permissions';
+import { userPermissions } from './permissions';
 
 @Injectable()
 export class AuthService {
@@ -27,11 +27,7 @@ export class AuthService {
       username: user.username,
       id: userDb.id,
       sub: userDb.id,
-      claims: [
-        PERMISSIONS.CARD_CREATE,
-        PERMISSIONS.CARD_DELETE,
-        PERMISSIONS.CARD_GET,
-      ],
+      claims: userPermissions,
     };
     const jwt_token = await this.jwtService.signAsync(payload);
 
@@ -43,7 +39,6 @@ export class AuthService {
   async signUp(user: UserInput) {
     const userDb = await this.usersService.findByUsername(user.username);
     if (userDb) {
-      //user exists
       throw new UnprocessableEntityException('User already exists.');
     }
     const hashedPass = await bcrypt.hash(user.password, this.saltRounds);

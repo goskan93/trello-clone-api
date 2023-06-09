@@ -46,6 +46,7 @@ export class CardController {
   }
 
   @Get(':cardId')
+  @RequiredPermissions(PERMISSIONS.CARD_GET)
   async getById(
     @Param('userId') userId: string,
     @Param('cardId') cardId: string,
@@ -62,6 +63,7 @@ export class CardController {
   }
 
   @Post()
+  @RequiredPermissions(PERMISSIONS.CARD_CREATE)
   async create(
     @Param('userId') userId: string,
     @Body() card: CardInput,
@@ -71,6 +73,7 @@ export class CardController {
   }
 
   @Delete(':cardId')
+  @RequiredPermissions(PERMISSIONS.CARD_DELETE)
   async delete(
     @Param('userId') userId: string,
     @Param('cardId') cardId: string,
