@@ -11,31 +11,43 @@ import { MoveTask } from 'src/contracts/inputs/MoveTask';
 export class TaskService {
   constructor(@InjectModel(Task.name) private taskModel: Model<TaskDocument>) {}
 
-  async getAll(): Promise<TaskOutput[]> {
-    const tasks = await this.taskModel.find().populate('card');
+  async getAllByUserId(userId: string): Promise<TaskOutput[]> {
+    const tasks = await this.taskModel.find({ user: userId }).populate('card');
     const mappedTasks = tasks.map((t) => {
       return new TaskOutput(t.name, t._id.toString(), t.card.id, t.index);
     });
     return mappedTasks;
   }
 
-  async findById(id: string): Promise<TaskOutput> {
-    const task = await this.taskModel.findById(id);
+  async findById(userId: string, taskId: string): Promise<TaskOutput> {
+    const task = await this.taskModel.findById(taskId);
 
-    return task
-      ? new TaskOutput(task.name, task._id.toString(), task.card.id, task.index)
-      : null;
+    if (task && task.user.toString() === userId) {
+      return new TaskOutput(
+        task.name,
+        task._id.toString(),
+        task.card.id,
+        task.index,
+      );
+    }
+    return null;
   }
 
-  async findByCardId(id: string): Promise<TaskOutput[]> {
-    const tasksForCard = await this.taskModel.find({ card: id });
-    return tasksForCard.map((t) => {
+  private async findByCardId(
+    userId: string,
+    cardId: string,
+  ): Promise<TaskOutput[]> {
+    const tasksInCard = await this.taskModel.find({
+      card: cardId,
+      user: userId,
+    });
+    return tasksInCard.map((t) => {
       return new TaskOutput(t.name, t._id.toString(), t.card.id, t.index);
     });
   }
 
-  async delete(id: string) {
-    await this.taskModel.deleteOne({ _id: id });
+  async delete(userId: string, taskId: string) {
+    await this.taskModel.deleteOne({ user: userId, _id: taskId });
   }
 
   private async update(taskId: string, cardId: string, index: number) {
@@ -45,13 +57,14 @@ export class TaskService {
     );
   }
 
-  async create(task: TaskInput): Promise<TaskOutput> {
-    const cardTasks = await this.findByCardId(task.cardId);
+  async create(userId: string, task: TaskInput): Promise<TaskOutput> {
+    const cardTasks = await this.findByCardId(userId, task.cardId);
 
     const newTask = new this.taskModel({
       ...task,
       card: task.cardId,
       index: cardTasks.length,
+      user: userId,
     });
     return newTask.save().then((savedTask) => {
       return new TaskOutput(
@@ -63,11 +76,11 @@ export class TaskService {
     });
   }
 
-  async move(context: MoveTask): Promise<void> {
-    let cardTasks = (await this.findByCardId(context.toCardId)).sort(
+  async move(userId: string, context: MoveTask): Promise<void> {
+    let cardTasks = (await this.findByCardId(userId, context.toCardId)).sort(
       (a, b) => a.index - b.index,
     );
-    let currentTask = await this.findById(context.taskId);
+    let currentTask = await this.findById(userId, context.taskId);
     const sortedTasks = this.prepareToMove(
       cardTasks,
       currentTask,
