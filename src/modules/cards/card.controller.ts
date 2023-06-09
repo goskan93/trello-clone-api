@@ -21,16 +21,16 @@ import { PERMISSIONS } from '../authentication/permissions';
 import { PermissionGuard } from '../authentication/permissions.guard';
 
 @UseGuards(AuthGuard, PermissionGuard)
-@Controller('api/user/cards')
+@Controller('api/users/:userId/cards')
 export class CardController {
   constructor(private readonly cardService: CardService) {}
 
   @Get()
   @HttpCode(200)
   @RequiredPermissions(PERMISSIONS.CARD_GET)
-  async getAllByUserId(): Promise<CardOutput[]> {
+  async getAllByUserId(@Param('userId') userId: string): Promise<CardOutput[]> {
     try {
-      const cards = await this.cardService.getAll();
+      const cards = await this.cardService.getAllByUserId(userId);
       return cards;
     } catch (error) {
       throw new InternalServerErrorException(
@@ -45,15 +45,16 @@ export class CardController {
     }
   }
 
-  @Get(':id')
+  @Get(':cardId')
   async getById(
-    @Param('id') id: string,
+    @Param('userId') userId: string,
+    @Param('cardId') cardId: string,
     @Res({ passthrough: true }) res: Response,
   ): Promise<CardOutput> {
-    const task = await this.cardService.findById(id);
-    if (task) {
+    const card = await this.cardService.findById(userId, cardId);
+    if (card) {
       res.status(HttpStatus.OK);
-      return task;
+      return card;
     }
 
     res.status(HttpStatus.NOT_FOUND);
@@ -61,13 +62,19 @@ export class CardController {
   }
 
   @Post()
-  async create(@Body() card: CardInput): Promise<string> {
-    const newCardId = await this.cardService.create(card);
+  async create(
+    @Param('userId') userId: string,
+    @Body() card: CardInput,
+  ): Promise<string> {
+    const newCardId = await this.cardService.create(userId, card);
     return newCardId;
   }
 
-  @Delete(':id')
-  async delete(@Param('id') id: string) {
-    await this.cardService.delete(id);
+  @Delete(':cardId')
+  async delete(
+    @Param('userId') userId: string,
+    @Param('cardId') cardId: string,
+  ) {
+    await this.cardService.delete(userId, cardId);
   }
 }
