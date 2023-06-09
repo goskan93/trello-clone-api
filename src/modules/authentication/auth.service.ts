@@ -7,6 +7,7 @@ import { UserService } from '../users/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UserInput } from 'src/contracts/inputs/UserInput';
+import { PERMISSIONS } from './permissions';
 
 @Injectable()
 export class AuthService {
@@ -22,9 +23,18 @@ export class AuthService {
     if (!correctPass) {
       throw new UnauthorizedException();
     }
-    const payload = { username: user.username, sub: userDb.id };
+    const payload = {
+      username: user.username,
+      id: userDb.id,
+      sub: userDb.id,
+      claims: [
+        PERMISSIONS.CARD_CREATE,
+        PERMISSIONS.CARD_DELETE,
+        PERMISSIONS.CARD_GET,
+      ],
+    };
     const jwt_token = await this.jwtService.signAsync(payload);
-    console.log({ jwt_token });
+
     return {
       access_token: jwt_token,
     };

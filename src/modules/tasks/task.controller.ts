@@ -16,7 +16,8 @@ import { TaskService } from './task.service';
 import { Response } from 'express';
 import { TaskInput } from 'src/contracts/inputs/TaskInput';
 import { MoveTask } from 'src/contracts/inputs/MoveTask';
-@Controller('api/tasks')
+
+@Controller('api/user/tasks')
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 

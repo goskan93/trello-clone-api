@@ -16,14 +16,19 @@ import { CardService } from './card.service';
 import { Response } from 'express';
 import { CardInput } from 'src/contracts/inputs/CardInput';
 import { AuthGuard } from '../authentication/auth.guard';
+import { RequiredPermissions } from '../authentication/permissions.decorator';
+import { PERMISSIONS } from '../authentication/permissions';
+import { PermissionGuard } from '../authentication/permissions.guard';
 
-@Controller('api/cards')
+@UseGuards(AuthGuard, PermissionGuard)
+@Controller('api/user/cards')
 export class CardController {
   constructor(private readonly cardService: CardService) {}
 
   @Get()
   @HttpCode(200)
-  async getAll(): Promise<CardOutput[]> {
+  @RequiredPermissions(PERMISSIONS.CARD_GET)
+  async getAllByUserId(): Promise<CardOutput[]> {
     try {
       const cards = await this.cardService.getAll();
       return cards;
@@ -40,7 +45,6 @@ export class CardController {
     }
   }
 
-  @UseGuards(AuthGuard)
   @Get(':id')
   async getById(
     @Param('id') id: string,
