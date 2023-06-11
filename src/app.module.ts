@@ -4,12 +4,16 @@ import { CardModule } from './modules/cards/card.module';
 import { TaskModule } from './modules/tasks/task.module';
 import { UserModule } from './modules/users/user.module';
 import { AuthModule } from './modules/authentication/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://localhost:testestestest@local-env.dwokr44.mongodb.net/trello-clone-api?retryWrites=true&w=majority',
-    ),
+    ConfigModule.forRoot({
+      envFilePath: [`${process.env.NODE_ENV}.env`],
+      isGlobal: true,
+      cache: true,
+    }),
+    MongooseModule.forRoot(process.env.DATABASE_URI),
     CardModule,
     TaskModule,
     UserModule,
