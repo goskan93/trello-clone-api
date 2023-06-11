@@ -1,6 +1,4 @@
 {
-    "buildCommand": "yarn build",
-    "outputDirectory": "dist",
     "builds": [
         {
             "src": "src/main.ts",
