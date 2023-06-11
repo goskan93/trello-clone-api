@@ -5,4 +5,4 @@ import { TestController } from './test.controller';
   imports: [],
   controllers: [TestController],
 })
-export class TaskModule {}
+export class TestModule {}
