@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from '../users/user.service';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { UserInput } from 'src/contracts/inputs/UserInput';
 import { userPermissions } from './permissions';
 
@@ -19,6 +19,7 @@ export class AuthService {
 
   async signIn(user: UserInput): Promise<AuthOutput> {
     const userDb = await this.usersService.findByUsername(user.username);
+    console.log(bcrypt);
     const correctPass = await bcrypt.compare(user.password, userDb.password);
     if (!correctPass) {
       throw new UnauthorizedException();
