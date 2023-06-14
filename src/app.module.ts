@@ -10,7 +10,7 @@ import { TestModule } from './modules/test/test.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: [`${process.env.NODE_ENV}.env`],
+      envFilePath: [`.env`],
       isGlobal: true,
       cache: true,
     }),
