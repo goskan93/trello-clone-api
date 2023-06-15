@@ -33,7 +33,6 @@ export class AuthGuard implements CanActivate {
     }
     try {
       const secret = this.configService.get<string>('JWT_SECRET');
-      console.log({ secret });
       const payload = await this.jwtService.verifyAsync(token, {
         secret,
       });
