@@ -1,3 +1,3 @@
-export class CardInput {
-  name: string;
+export default class CardInput {
+  name!: string;
 }

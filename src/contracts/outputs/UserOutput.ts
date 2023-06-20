@@ -1,4 +1,4 @@
-export class UserOutput {
+export default class UserOutput {
   id: string;
   username: string;
 
