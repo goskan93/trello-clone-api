@@ -1,5 +1,5 @@
 {
-  "name": "@goskan93@trello-clone-contracts",
+  "name": "trello-clone-contracts",
   "version": "1.0.0",
   "description": "trello clone project contracts",
   "types": "./dist/index.d.ts",
