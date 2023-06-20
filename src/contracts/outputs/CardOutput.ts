@@ -1,4 +1,4 @@
-export class CardOutput {
+export default class CardOutput {
   id: string;
   name: string;
   constructor(name: string, id: string) {

@@ -1,6 +1,7 @@
 import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UserInput } from 'src/contracts/inputs/UserInput';
+import UserInput from 'src/contracts/inputs/UserInput';
+import AuthOutput from 'src/contracts/outputs/AuthOutput';
 
 @Controller('api/auth')
 export class AuthController {

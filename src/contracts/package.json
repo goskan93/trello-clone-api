@@ -1,0 +1,17 @@
+{
+  "name": "@goskan93@trello-clone-contracts",
+  "version": "1.0.0",
+  "description": "trello clone project contracts",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "goskan93:registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "goskan93",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.1.3"
+  }
+}

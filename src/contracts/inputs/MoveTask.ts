@@ -1,6 +1,6 @@
-export class MoveTask {
-  fromCardId: string;
-  toCardId: string;
-  taskId: string;
-  index: number;
+export default class MoveTask {
+  fromCardId!: string;
+  toCardId!: string;
+  taskId!: string;
+  index!: number;
 }

@@ -1,4 +1,4 @@
-export class TaskOutput {
+export default class TaskOutput {
   id: string;
   name: string;
   cardId: string;

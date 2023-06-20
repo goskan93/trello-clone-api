@@ -1,4 +1,4 @@
-export class UserInput {
-  username: string;
-  password: string;
+export default class UserInput {
+  username!: string;
+  password!: string;
 }
