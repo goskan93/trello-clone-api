@@ -1,3 +1,3 @@
-export default class CardInput {
-  name!: string;
+export default interface CardInput {
+  name: string;
 }

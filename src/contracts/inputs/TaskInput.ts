@@ -1,4 +1,4 @@
-export default class TaskInput {
-  name!: string;
-  cardId!: string;
+export default interface TaskInput {
+  name: string;
+  cardId: string;
 }
