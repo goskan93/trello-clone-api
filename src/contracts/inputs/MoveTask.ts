@@ -1,6 +1,6 @@
-export default class MoveTask {
-  fromCardId!: string;
-  toCardId!: string;
-  taskId!: string;
-  index!: number;
+export default interface MoveTask {
+  fromCardId: string;
+  toCardId: string;
+  taskId: string;
+  index: number;
 }
