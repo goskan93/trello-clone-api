@@ -377,6 +377,12 @@
   resolved "https://registry.npmjs.org/@eslint/js/-/js-8.41.0.tgz"
   integrity sha512-LxcyMGxwmTh2lY9FwHPGWOHmYFCZvbrFCBZL4FzSSsxsRPuhrYUg/49/0KDfW8tnIEaEHtfmn6+NPN+1DqaNmA==
 
+"@goskan93/trello-clone-contracts@https://github.com/goskan93/trello-clone-contracts":
+  version "1.0.8"
+  resolved "https://github.com/goskan93/trello-clone-contracts#debabe09df3af2aea9a3fbdd899ad9f88657b4a8"
+  dependencies:
+    typescript "^5.1.3"
+
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.10"
   resolved "https://registry.npmjs.org/@humanwhocodes/config-array/-/config-array-0.11.10.tgz"
@@ -4978,6 +4984,11 @@ typescript@4.9.5, typescript@^4.7.4:
   version "4.9.5"
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz"
   integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
+
+typescript@^5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.3.tgz#8d84219244a6b40b6fb2b33cc1c062f715b9e826"
+  integrity sha512-XH627E9vkeqhlZFQuL+UsyAXEnibT0kWR2FWONlr4sTjvxyJYnyefgrkyECLzM5NenmKzRAy2rR/OlYLA1HkZw==
 
 uid@2.0.2:
   version "2.0.2"

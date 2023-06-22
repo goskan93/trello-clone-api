@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { TaskInput } from 'src/contracts/inputs/TaskInput';
-import { TaskOutput } from 'src/contracts/outputs/TaskOutput';
+import {
+  TaskInput,
+  TaskOutput,
+  MoveTask,
+} from '@goskan93/trello-clone-contracts';
 import { InjectModel } from '@nestjs/mongoose';
 import { Task, TaskDocument } from './dto/task.schema';
 import { Model } from 'mongoose';
 import { insertElement } from 'src/helpers/arrayHelpers';
-import { MoveTask } from 'src/contracts/inputs/MoveTask';
 
 @Injectable()
 export class TaskService {
@@ -13,8 +15,13 @@ export class TaskService {
 
   async getAllByUserId(userId: string): Promise<TaskOutput[]> {
     const tasks = await this.taskModel.find({ user: userId }).populate('card');
-    const mappedTasks = tasks.map((t) => {
-      return new TaskOutput(t.name, t._id.toString(), t.card.id, t.index);
+    const mappedTasks: TaskOutput[] = tasks.map((t) => {
+      return {
+        name: t.name,
+        id: t._id.toString(),
+        cardId: t.card.id,
+        index: t.index,
+      };
     });
     return mappedTasks;
   }
@@ -23,12 +30,12 @@ export class TaskService {
     const task = await this.taskModel.findById(taskId);
 
     if (task && task.user.toString() === userId) {
-      return new TaskOutput(
-        task.name,
-        task._id.toString(),
-        task.card.id,
-        task.index,
-      );
+      return {
+        cardId: task.card.id,
+        name: task.name,
+        id: task._id.toString(),
+        index: task.index,
+      };
     }
     return null;
   }
@@ -42,7 +49,12 @@ export class TaskService {
       user: userId,
     });
     return tasksInCard.map((t) => {
-      return new TaskOutput(t.name, t._id.toString(), t.card.id, t.index);
+      return {
+        cardId: t.card.id,
+        name: t.name,
+        id: t._id.toString(),
+        index: t.index,
+      };
     });
   }
 
@@ -67,12 +79,12 @@ export class TaskService {
       user: userId,
     });
     return newTask.save().then((savedTask) => {
-      return new TaskOutput(
-        savedTask.name,
-        savedTask._id.toString(),
-        savedTask.card.toString(),
-        savedTask.index,
-      );
+      return {
+        cardId: savedTask.card.toString(),
+        name: savedTask.name,
+        id: savedTask._id.toString(),
+        index: savedTask.index,
+      };
     });
   }
 

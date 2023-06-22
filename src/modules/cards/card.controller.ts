@@ -11,10 +11,9 @@ import {
   UseGuards,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { CardOutput } from 'src/contracts/outputs/CardOutput';
+import { CardOutput, CardInput } from '@goskan93/trello-clone-contracts';
 import { CardService } from './card.service';
 import { Response } from 'express';
-import { CardInput } from 'src/contracts/inputs/CardInput';
 import { AuthGuard } from '../authentication/auth.guard';
 import { RequiredPermissions } from '../authentication/permissions.decorator';
 import { PERMISSIONS } from '../authentication/permissions';

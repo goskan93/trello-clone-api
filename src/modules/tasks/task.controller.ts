@@ -12,11 +12,13 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common';
-import { TaskOutput } from 'src/contracts/outputs/TaskOutput';
+import {
+  TaskOutput,
+  TaskInput,
+  MoveTask,
+} from '@goskan93/trello-clone-contracts';
 import { TaskService } from './task.service';
 import { Response } from 'express';
-import { TaskInput } from 'src/contracts/inputs/TaskInput';
-import { MoveTask } from 'src/contracts/inputs/MoveTask';
 import { AuthGuard } from '../authentication/auth.guard';
 import { PermissionGuard } from '../authentication/permissions.guard';
 import { RequiredPermissions } from '../authentication/permissions.decorator';

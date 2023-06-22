@@ -6,7 +6,7 @@ import {
 import { UserService } from '../users/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import { UserInput } from 'src/contracts/inputs/UserInput';
+import { UserInput, AuthOutput } from '@goskan93/trello-clone-contracts';
 import { userPermissions } from './permissions';
 
 @Injectable()

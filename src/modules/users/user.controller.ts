@@ -8,7 +8,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { UserOutput } from 'src/contracts/outputs/UserOutput';
+import { UserOutput } from '@goskan93/trello-clone-contracts';
 import { AuthGuard, RequestWithUser } from '../authentication/auth.guard';
 
 @UseGuards(AuthGuard)
@@ -24,7 +24,10 @@ export class UserController {
     if (req._user) {
       const { username, id } = req._user;
       res.status(HttpStatus.OK);
-      return new UserOutput(username, id);
+      return {
+        id,
+        username,
+      };
     }
 
     res.status(HttpStatus.NOT_FOUND);

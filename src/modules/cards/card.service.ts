@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CardInput } from 'src/contracts/inputs/CardInput';
-import { CardOutput } from 'src/contracts/outputs/CardOutput';
+import { CardInput, CardOutput } from '@goskan93/trello-clone-contracts';
 import { InjectModel } from '@nestjs/mongoose';
 import { Card, CardDocument } from './dto/card.schema';
 import { Model } from 'mongoose';
@@ -11,16 +10,20 @@ export class CardService {
 
   async getAllByUserId(userId: string): Promise<CardOutput[]> {
     const cards = await this.cardModel.find({ user: userId }); //.populate('user');
-    const mappedCards = cards.map(
-      (c) => new CardOutput(c.name, c._id.toString()),
-    );
+    const mappedCards: CardOutput[] = cards.map((c) => ({
+      id: c._id.toString(),
+      name: c.name,
+    }));
     return mappedCards;
   }
 
   async findById(userId: string, cardId: string): Promise<CardOutput> {
     const card = await this.cardModel.findById(cardId);
     if (card && card.user.toString() === userId) {
-      return new CardOutput(card.name, card._id.toString());
+      return {
+        id: card._id.toString(),
+        name: card.name,
+      } as CardOutput;
     }
     return null;
   }
