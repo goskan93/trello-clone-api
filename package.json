@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "engines": {
-    "node": "16.15.0"
+    "node": "18.14.2"
   },
   "scripts": {
     "build": "nest build",
@@ -39,6 +39,7 @@
     "rxjs": "^7.2.0"
   },
   "devDependencies": {
+    "@goskan93/trello-clone-contracts": "https://github.com/goskan93/trello-clone-contracts",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",

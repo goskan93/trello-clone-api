@@ -1,7 +1,6 @@
 import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import UserInput from 'src/contracts/inputs/UserInput';
-import AuthOutput from 'src/contracts/outputs/AuthOutput';
+import { UserInput, AuthOutput } from '@goskan93/trello-clone-contracts';
 
 @Controller('api/auth')
 export class AuthController {
