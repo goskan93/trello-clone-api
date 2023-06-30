@@ -377,9 +377,10 @@
   resolved "https://registry.npmjs.org/@eslint/js/-/js-8.41.0.tgz"
   integrity sha512-LxcyMGxwmTh2lY9FwHPGWOHmYFCZvbrFCBZL4FzSSsxsRPuhrYUg/49/0KDfW8tnIEaEHtfmn6+NPN+1DqaNmA==
 
-"@goskan93/trello-clone-contracts@https://github.com/goskan93/trello-clone-contracts":
+"@goskan93/trello-clone-contracts@^1.0.8":
   version "1.0.8"
-  resolved "https://github.com/goskan93/trello-clone-contracts#debabe09df3af2aea9a3fbdd899ad9f88657b4a8"
+  resolved "https://npm.pkg.github.com/download/@goskan93/trello-clone-contracts/1.0.8/15fbfbf2ec2e665a206f0407179380386e9449fb#15fbfbf2ec2e665a206f0407179380386e9449fb"
+  integrity sha512-9rurj8sB5sNdzKHlShiQCjj1HG53WWKW0Ry7c4WejfIFzb6J94V6fWgyPmonXiSD9hCCz7csKtmADjpDYiAuxQ==
   dependencies:
     typescript "^5.1.3"
 
