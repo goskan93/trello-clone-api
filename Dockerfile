@@ -1,7 +1,8 @@
-FROM node:16.15.0-alpine
+FROM node:18.14.2-alpine
 WORKDIR /api
 COPY dist .
 COPY .env .
+COPY .npmrc .
 COPY package.json .
 RUN yarn install --production
 CMD [ "node" , "main.js" ]

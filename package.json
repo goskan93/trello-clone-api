@@ -39,7 +39,7 @@
     "rxjs": "^7.2.0"
   },
   "devDependencies": {
-    "@goskan93/trello-clone-contracts": "https://github.com/goskan93/trello-clone-contracts",
+    "@goskan93/trello-clone-contracts": "^1.0.8",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
